@@ -1,15 +1,23 @@
-name: Ping Website Every 5 Minutes
+name: Ping BSE Website Every 5 Minutes
 
 on:
   schedule:
-    - cron: '*/5 * * * *'  # Every 5 minutes
-  workflow_dispatch:       # Optional: lets you run it manually from UI
+    - cron: '*/5 * * * *'  # Runs every 5 minutes
+  workflow_dispatch:       # Allows manual trigger via UI
 
 jobs:
   ping:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Curl your site
+      - name: Ping the site with curl
         run: |
-          echo "Pinging site..."
-          curl -s -o /dev/null -w "HTTP status: %{http_code}\n" https://your-site.com
+          echo "Pinging https://www.bseindia.com/..."
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://www.bseindia.com/)
+          echo "Response Status Code: $STATUS"
+          if [ "$STATUS" -ne 200 ]; then
+            echo "⚠️ Website is down or returned non-200!"
+            exit 1
+          else
+            echo "✅ Website is healthy."
+          fi
