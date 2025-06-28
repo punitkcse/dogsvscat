@@ -13,7 +13,7 @@ jobs:
       - name: Ping the site with curl
         run: |
           echo "Pinging https://www.bseindia.com/"
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://www.bseindia.com/)
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://www.bseindia.com)
           echo "Response Status Code: $STATUS"
           if [ "$STATUS" -ne 200 ]; then
             echo "⚠️ Website is down or returned non-200!"
